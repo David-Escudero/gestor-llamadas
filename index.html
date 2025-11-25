@@ -790,8 +790,15 @@
             if (savedToken) {
                 accessToken = savedToken;
                 gapi.client.setToken({ access_token: accessToken });
+                            try {
                 await loadFromSheets();
                 showMainApp();
+                                            } catch (error) {
+                console.error('Token expirado o invalido:', error);
+                localStorage.removeItem('google_access_token');
+                accessToken = null;
+                showAuthScreen();
+            }
             } else {
                 showAuthScreen();
             }
@@ -924,9 +931,21 @@
         }
 
         async function manualSync() {
-            await loadFromSheets();
+                    if (!accessToken) {
+            handleAuthClick();
+            return;
         }
-
+        try {
+            await loadFromSheets();
+        } catch (error) {
+            console.error('Error de sincronización:', error);
+            if (error.status === 401 || error.status === 403) {
+                localStorage.removeItem('google_access_token');
+                accessToken = null;
+                showAuthScreen();
+            }
+        }
+    }
         function updateSyncStatus(status, icon, text) {
             const statusEl = document.getElementById('syncStatus');
             statusEl.className = `sync-status ${status}`;
