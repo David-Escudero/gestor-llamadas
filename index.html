@@ -892,12 +892,9 @@
         async function saveToSheets() {
                         // Verificar token antes de guardar
             if (!accessToken) {
-                handleAuthClick();
-                return;
+            showAuthScreen();                return;
             }
             try {
-                updateSyncStatus('syncing', '🔄', 'Guardando...');
-                
                 const values = reminders.map(r => [
                     r.id,
                     r.clientName,
