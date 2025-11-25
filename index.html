@@ -890,6 +890,11 @@
         }
 
         async function saveToSheets() {
+                        // Verificar token antes de guardar
+            if (!accessToken) {
+                handleAuthClick();
+                return;
+            }
             try {
                 updateSyncStatus('syncing', '🔄', 'Guardando...');
                 
@@ -926,10 +931,17 @@
                 updateSyncStatus('connected', '✅', 'Sincronizado');
             } catch (error) {
                 console.error('Error guardando datos:', error);
-                updateSyncStatus('disconnected', '⚠️', 'Error al guardar');
+                                // Manejar errores de autenticación
+                if (error.status === 401 || error.status === 403) {
+                    localStorage.removeItem('google_access_token');
+                    accessToken = null;
+                    showAuthScreen();
+                    updateSyncStatus('disconnected', '🔑', 'Sesión expirada');
+                } else {
+                    updateSyncStatus('disconnected', '⚠️', 'Error al guardar');
             }
         }
-
+                }
         async function manualSync() {
                     if (!accessToken) {
             handleAuthClick();
