@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<!-- saved from url=(0163)https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/f2b2ccf1d76f60f1d9a0ddc055b21a7e/5e50a87e-9003-4ec8-b627-17ce8b80509a/canvas-app/index.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Recordatorios - Sincronizado</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00AEEF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Recordatorios">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpg" href="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c06b1a21-02ba-408c-99d0-08f2f29936e5">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c06b1a21-02ba-408c-99d0-08f2f29936e5">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c06b1a21-02ba-408c-99d0-08f2f29936e5">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c06b1a21-02ba-408c-99d0-08f2f29936e5">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c06b1a21-02ba-408c-99d0-08f2f29936e5">
+    
+    <!-- Android Chrome -->
+    <link rel="icon" sizes="192x192" href="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c06b1a21-02ba-408c-99d0-08f2f29936e5">
+    <link rel="icon" sizes="512x512" href="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c06b1a21-02ba-408c-99d0-08f2f29936e5">
+    
+    <style>
+        :root {
+            /* Colores de Bueno Digital Estudio - del logo */
+            --color-brand-orange: rgba(255, 108, 55, 1);
+            --color-brand-blue: rgba(0, 174, 239, 1);
+            --color-brand-teal: rgba(0, 180, 216, 1);
+            --color-brand-orange-dark: rgba(230, 90, 40, 1);
+            --color-brand-blue-dark: rgba(0, 140, 200, 1);
+            
+            /* Colores base */
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            
+            /* RGB versions para opacidad */
+            --color-brand-orange-rgb: 255, 108, 55;
+            --color-brand-blue-rgb: 0, 174, 239;
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-slate-900-rgb: 19, 52, 59;
+            --color-slate-500-rgb: 98, 108, 113;
+            
+            /* Semantic tokens con colores de marca */
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-brand-blue);
+            --color-primary-hover: var(--color-brand-blue-dark);
+            --color-primary-active: var(--color-brand-teal);
+            --color-secondary: rgba(var(--color-brand-orange-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brand-orange-rgb), 0.2);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-btn-primary-text: var(--color-white);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-error: var(--color-red-500);
+            --color-success: var(--color-brand-teal);
+            --color-warning: var(--color-brand-orange);
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-gray-400-rgb: 119, 124, 124;
+                --color-gray-300-rgb: 167, 169, 169;
+                --color-gray-200-rgb: 245, 245, 245;
+                --color-background: var(--color-charcoal-700);
+                --color-surface: rgba(38, 40, 40, 0.95);
+                --color-text: var(--color-white);
+                --color-text-secondary: rgba(255, 255, 255, 0.85);
+                --color-primary: var(--color-brand-blue);
+                --color-primary-hover: var(--color-brand-blue-dark);
+                --color-secondary: rgba(var(--color-brand-orange-rgb), 0.25);
+                --color-secondary-hover: rgba(var(--color-brand-orange-rgb), 0.35);
+                --color-border: rgba(255, 255, 255, 0.2);
+                --color-card-border: rgba(255, 255, 255, 0.25);
+                --color-error: var(--color-red-400);
+                --color-success: var(--color-brand-teal);
+                --color-warning: var(--color-brand-orange);
+                --color-btn-primary-text: var(--color-white);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background: url('https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/3320e134-34ff-4fec-ab22-f8bc1f24bed3') center center / cover fixed no-repeat;
+            color: var(--color-text);
+            padding: var(--space-20);
+            line-height: 1.5;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            body::before {
+                background: rgba(0, 0, 0, 0.7);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-24);
+            flex-wrap: wrap;
+            gap: var(--space-16);
+            background: linear-gradient(135deg, var(--color-brand-blue), var(--color-brand-orange));
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background-image: url('https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/121f63f5-a9d6-4b34-ba29-d6b319e935fa');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.9;
+        }
+        
+        .header h1 {
+            margin-left: 80px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-white);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--space-12);
+            align-items: center;
+        }
+
+        .sync-status {
+            font-size: 12px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .sync-status.connected {
+            background: rgba(var(--color-brand-teal), 0.15);
+            color: var(--color-success);
+        }
+
+        .sync-status.disconnected {
+            background: rgba(192, 21, 47, 0.15);
+            color: var(--color-error);
+        }
+
+        .sync-status.syncing {
+            background: rgba(168, 75, 47, 0.15);
+            color: var(--color-warning);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-12) var(--space-20);
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .btn-small {
+            padding: var(--space-8) var(--space-12);
+            font-size: 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-20);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--color-text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-16);
+        }
+
+        label {
+            display: block;
+            margin-bottom: var(--space-8);
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--color-text);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            font-family: var(--font-family-base);
+            background: var(--color-surface);
+            color: var(--color-text);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .filter-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: var(--space-16);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-20);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: var(--space-12);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-controls select {
+            width: auto;
+            min-width: 150px;
+        }
+
+        .calls-grid {
+            display: grid;
+            gap: var(--space-16);
+        }
+
+        .day-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: var(--space-20);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .day-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-16);
+            padding-bottom: var(--space-12);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .day-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .day-count {
+            background: linear-gradient(135deg, var(--color-brand-blue), var(--color-brand-teal));
+            color: var(--color-white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .call-item {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: var(--radius-base);
+            padding: var(--space-16);
+            margin-bottom: var(--space-12);
+            border-left: 4px solid var(--color-brand-blue);
+            transition: all 0.3s ease;
+        }
+
+        .call-item:hover {
+            border-left-width: 6px;
+            box-shadow: 0 4px 12px rgba(var(--color-brand-blue-rgb), 0.25);
+            transform: translateX(4px);
+        }
+
+        .call-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .call-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-12);
+        }
+
+        .call-client {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 4px;
+        }
+
+        .call-time {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .call-phone {
+            font-size: 14px;
+            color: var(--color-primary);
+            margin-bottom: var(--space-8);
+        }
+
+        .call-notes {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-12);
+            line-height: 1.5;
+        }
+
+        .call-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-8);
+        }
+
+        .call-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-pendiente {
+            background: rgba(168, 75, 47, 0.15);
+            color: var(--color-warning);
+            border: 1px solid rgba(168, 75, 47, 0.25);
+        }
+
+        .status-completada {
+            background: rgba(33, 128, 141, 0.15);
+            color: var(--color-success);
+            border: 1px solid rgba(33, 128, 141, 0.25);
+        }
+
+        .call-actions {
+            display: flex;
+            gap: var(--space-8);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-24);
+            color: var(--color-text-secondary);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-16);
+            margin-bottom: var(--space-24);
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: var(--space-20);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .priority-alta {
+            background: rgba(192, 21, 47, 0.15);
+            color: var(--color-error);
+        }
+
+        .priority-media {
+            background: rgba(var(--color-brand-orange-rgb), 0.15);
+            color: var(--color-brand-orange-dark);
+        }
+
+        .priority-baja {
+            background: rgba(var(--color-brand-blue-rgb), 0.15);
+            color: var(--color-brand-blue-dark);
+        }
+
+        .auth-container {
+            max-width: 500px;
+            margin: 100px auto;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-container h2 {
+            margin-bottom: var(--space-16);
+            color: var(--color-text);
+        }
+
+        .auth-container p {
+            margin-bottom: var(--space-24);
+            color: var(--color-text-secondary);
+        }        @media (prefers-color-scheme: dark) {
+            .modal-content,
+            .filter-section,
+            .day-section,
+            .stat-card,
+            .auth-container {
+                background: rgba(38, 40, 40, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+            }
+            
+            .call-item {
+                background: rgba(50, 52, 52, 0.9);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            input, select, textarea {
+                background: rgba(60, 62, 62, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: var(--color-white);
+            }
+        }
+
+            @media (max-width: 768px) {
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-controls select {
+                width: 100%;
+            }
+
+            .call-header {
+                flex-direction: column;
+            }
+
+            .call-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+<style id="googleidentityservice_button_styles">.qJTHM{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;color:#202124;direction:ltr;-webkit-touch-callout:none;font-family:"Roboto-Regular",arial,sans-serif;-webkit-font-smoothing:antialiased;font-weight:400;margin:0;overflow:hidden;-webkit-text-size-adjust:100%}.ynRLnc{left:-9999px;position:absolute;top:-9999px}.L6cTce{display:none}.bltWBb{overflow-wrap:break-word;word-break:break-word}.hSRGPd{color:#1a73e8;cursor:pointer;font-weight:500;text-decoration:none}.Bz112c-W3lGp{height:16px;width:16px}.Bz112c-E3DyYd{height:20px;width:20px}.Bz112c-r9oPif{height:24px;width:24px}.Bz112c-u2z5K{height:36px;width:36px}.Bz112c-uaxL4e{border-radius:10px}.LgbsSe-Bz112c{display:block}.S9gUrf-YoZ4jf{border:none;margin:0;padding:0}.S9gUrf-YoZ4jf *{border:none;margin:0;padding:0}.fFW7wc-ibnC6b>.aZ2wEe>div{border-color:#4285f4}.P1ekSe-ZMv3u{-webkit-transition:height linear .2s;transition:height linear .2s}.P1ekSe-ZMv3u>div:nth-child(1){background-color:#1a73e8!important;-webkit-transition:width linear .3s;transition:width linear .3s}.P1ekSe-ZMv3u>div:nth-child(2){background-image:-webkit-gradient(linear,left top,right top,from(rgba(255,255,255,.7)),to(rgba(255,255,255,.7))),-webkit-gradient(linear,left top,right top,from(#1a73e8),to(#1a73e8))!important;background-image:-webkit-linear-gradient(left,rgba(255,255,255,.7),rgba(255,255,255,.7)),-webkit-linear-gradient(left,#1a73e8,#1a73e8)!important;background-image:linear-gradient(to right,rgba(255,255,255,.7),rgba(255,255,255,.7)),linear-gradient(to right,#1a73e8,#1a73e8)!important}.P1ekSe-ZMv3u>div:nth-child(3){background-image:-webkit-gradient(linear,left top,right top,from(rgba(255,255,255,.7)),to(rgba(255,255,255,.7))),-webkit-gradient(linear,left top,right top,from(#1a73e8),to(#1a73e8))!important;background-image:-webkit-linear-gradient(left,rgba(255,255,255,.7),rgba(255,255,255,.7)),-webkit-linear-gradient(left,#1a73e8,#1a73e8)!important;background-image:linear-gradient(to right,rgba(255,255,255,.7),rgba(255,255,255,.7)),linear-gradient(to right,#1a73e8,#1a73e8)!important}.haAclf{display:inline-block}.nsm7Bb-HzV7m-LgbsSe{border-radius:4px;box-sizing:border-box;-webkit-transition:background-color .218s,border-color .218s;transition:background-color .218s,border-color .218s;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;-webkit-appearance:none;background-color:#fff;background-image:none;border:1px solid #dadce0;color:#3c4043;cursor:pointer;font-family:"Google Sans",arial,sans-serif;font-size:14px;height:40px;letter-spacing:.25px;outline:none;overflow:hidden;padding:0 12px;position:relative;text-align:center;vertical-align:middle;white-space:nowrap;width:auto}@media screen and (-ms-high-contrast:active){.nsm7Bb-HzV7m-LgbsSe{border:2px solid windowText;color:windowText}}@media screen and (preferes-contrast:more){.nsm7Bb-HzV7m-LgbsSe{color:#000}}.nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe{font-size:14px;height:32px;letter-spacing:.25px;padding:0 10px}.nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe{font-size:11px;height:20px;letter-spacing:.3px;padding:0 8px}.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe{padding:0;width:40px}.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.pSzOP-SxQuSe{width:32px}.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.purZT-SxQuSe{width:20px}.nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK{border-radius:20px}.nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK.pSzOP-SxQuSe{border-radius:16px}.nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK.purZT-SxQuSe{border-radius:10px}.nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc{border:none;color:#fff}.nsm7Bb-HzV7m-LgbsSe.MFS4be-v3pZbf-Ia7Qfc{background-color:#1a73e8}.nsm7Bb-HzV7m-LgbsSe.MFS4be-JaPV2b-Ia7Qfc{background-color:#202124;color:#e8eaed}@media screen and (prefers-contrast:more){.nsm7Bb-HzV7m-LgbsSe.MFS4be-JaPV2b-Ia7Qfc{color:#fff}}.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c{height:18px;margin-right:8px;min-width:18px;width:18px}.nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c{height:14px;min-width:14px;width:14px}.nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c{height:10px;min-width:10px;width:10px}.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-Bz112c{margin-left:8px;margin-right:-4px}.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c{margin:0;padding:10px}.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.pSzOP-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c{padding:8px}.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c{padding:4px}.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{border-top-left-radius:3px;border-bottom-left-radius:3px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-box-align:center;-webkit-align-items:center;align-items:center;background-color:#fff;height:36px;margin-left:-10px;margin-right:12px;min-width:36px;width:36px}.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf .nsm7Bb-HzV7m-LgbsSe-Bz112c,.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf .nsm7Bb-HzV7m-LgbsSe-Bz112c{margin:0;padding:0}.nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{height:28px;margin-left:-8px;margin-right:10px;min-width:28px;width:28px}.nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{height:16px;margin-left:-6px;margin-right:8px;min-width:16px;width:16px}.nsm7Bb-HzV7m-LgbsSe.Bz112c-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{border-radius:3px;margin-left:2px;margin-right:0;padding:0}.nsm7Bb-HzV7m-LgbsSe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{border-radius:18px}.nsm7Bb-HzV7m-LgbsSe.pSzOP-SxQuSe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{border-radius:14px}.nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{border-radius:8px}.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;-webkit-box-align:center;align-items:center;-webkit-flex-direction:row;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;height:100%;position:relative;width:100%}.nsm7Bb-HzV7m-LgbsSe .oXtfBe-l4eHX{-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center}.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-BPrWId{-webkit-flex-grow:1;-webkit-box-flex:1;flex-grow:1;font-family:"Google Sans",arial,sans-serif;font-weight:500;overflow:hidden;text-overflow:ellipsis;vertical-align:top}.nsm7Bb-HzV7m-LgbsSe.purZT-SxQuSe .nsm7Bb-HzV7m-LgbsSe-BPrWId{font-weight:300}.nsm7Bb-HzV7m-LgbsSe .oXtfBe-l4eHX .nsm7Bb-HzV7m-LgbsSe-BPrWId{-webkit-flex-grow:0;-webkit-box-flex:0;flex-grow:0}.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-MJoBVe{-webkit-transition:background-color .218s;transition:background-color .218s;bottom:0;left:0;position:absolute;right:0;top:0}.nsm7Bb-HzV7m-LgbsSe:hover,.nsm7Bb-HzV7m-LgbsSe:focus{box-shadow:none;border-color:rgb(210,227,252);outline:none}.nsm7Bb-HzV7m-LgbsSe:focus-within{outline:2px solid #00639b;border-color:transparent}.nsm7Bb-HzV7m-LgbsSe:hover .nsm7Bb-HzV7m-LgbsSe-MJoBVe{background:rgba(66,133,244,.08)}.nsm7Bb-HzV7m-LgbsSe:active .nsm7Bb-HzV7m-LgbsSe-MJoBVe,.nsm7Bb-HzV7m-LgbsSe:focus .nsm7Bb-HzV7m-LgbsSe-MJoBVe{background:rgba(66,133,244,.1)}.nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc:hover .nsm7Bb-HzV7m-LgbsSe-MJoBVe{background:rgba(255,255,255,.24)}.nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc:active .nsm7Bb-HzV7m-LgbsSe-MJoBVe,.nsm7Bb-HzV7m-LgbsSe.MFS4be-Ia7Qfc:focus .nsm7Bb-HzV7m-LgbsSe-MJoBVe{background:rgba(255,255,255,.32)}.nsm7Bb-HzV7m-LgbsSe .n1UuX-DkfjY{border-radius:50%;display:-webkit-box;display:-webkit-flex;display:flex;height:20px;margin-left:-4px;margin-right:8px;min-width:20px;width:20px}.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId{font-family:"Roboto";font-size:12px;text-align:left}.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .ssJRIf,.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff .fmcmS{overflow:hidden;text-overflow:ellipsis}.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;-webkit-box-align:center;align-items:center;color:#5f6368;fill:#5f6368;font-size:11px;font-weight:400}.nsm7Bb-HzV7m-LgbsSe.jVeSEe.MFS4be-Ia7Qfc .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff{color:#e8eaed;fill:#e8eaed}@media screen and (prefers-contrast:more){.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff,.nsm7Bb-HzV7m-LgbsSe.jVeSEe.MFS4be-Ia7Qfc .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff{color:#000;fill:#000}}.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-BPrWId .K4efff .Bz112c{height:18px;margin:-3px -3px -3px 2px;min-width:18px;width:18px}.nsm7Bb-HzV7m-LgbsSe.jVeSEe .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:3px;border-bottom-right-radius:3px;margin-left:12px;margin-right:-10px}.nsm7Bb-HzV7m-LgbsSe.jVeSEe.JGcpL-RbRzK .nsm7Bb-HzV7m-LgbsSe-Bz112c-haAclf{border-radius:18px}.L5Fo6c-sM5MNb{border:0;display:block;left:0;position:relative;top:0}.L5Fo6c-bF1uUb{border-radius:4px;bottom:0;cursor:pointer;left:0;position:absolute;right:0;top:0}.L5Fo6c-bF1uUb:focus{border:none;outline:none}sentinel{}</style></head>
+<body>
+    <!-- Pantalla de autenticación -->
+    <div id="authScreen" class="auth-container" style="display: none;">
+        <h2>🔐 Conectar con Google Sheets</h2>
+        <p>Para sincronizar los recordatorios entre dispositivos, necesitas autorizar el acceso a Google Sheets.</p>
+        <button class="btn btn-primary" onclick="handleAuthClick()">Conectar con Google</button>
+    </div>
+
+    <!-- Aplicación principal -->
+    <div id="mainApp" style="display: block;">
+        <div class="container">
+            <div class="header">
+                <h1>📞 Gestor de Llamadas</h1>
+                <div class="header-actions">
+                    <div id="syncStatus" class="sync-status connected">
+                        <span id="syncIcon">✅</span>
+                        <span id="syncText">Conectado</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="manualSync()">🔄 Sincronizar</button>
+                    <button class="btn btn-primary" onclick="openModal()">+ Nuevo</button>
+                </div>
+            </div>
+
+            <div class="stats" id="stats">
+                <div class="stat-card">
+                    <div class="stat-label">Hoy</div>
+                    <div class="stat-value" id="statToday">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Esta Semana</div>
+                    <div class="stat-value" id="statWeek">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Pendientes</div>
+                    <div class="stat-value" id="statPending">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Completadas</div>
+                    <div class="stat-value" id="statCompleted">0</div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-controls">
+                    <select id="filterView" onchange="renderCalls()">
+                        <option value="upcoming">Próximas llamadas</option>
+                        <option value="today">Solo hoy</option>
+                        <option value="week">Esta semana</option>
+                        <option value="all">Todas</option>
+                    </select>
+                    <select id="filterStatus" onchange="renderCalls()">
+                        <option value="all">Todos los estados</option>
+                        <option value="pendiente">Pendientes</option>
+                        <option value="completada">Completadas</option>
+                    </select>
+                    <select id="filterPriority" onchange="renderCalls()">
+                        <option value="all">Todas las prioridades</option>
+                        <option value="alta">Alta prioridad</option>
+                        <option value="media">Media prioridad</option>
+                        <option value="baja">Baja prioridad</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calls-grid" id="callsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Modal para crear/editar recordatorio -->
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nuevo Recordatorio</h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <form id="reminderForm" onsubmit="saveReminder(event)">
+                <div class="form-group">
+                    <label for="clientName">Nombre del Cliente/Clínica *</label>
+                    <input type="text" id="clientName" required="" placeholder="Ej: Clínica Dental Alicante">
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Teléfono *</label>
+                    <input type="tel" id="phoneNumber" required="" placeholder="Ej: +34 600 123 456">
+                </div>
+                <div class="form-group">
+                    <label for="callDate">Fecha de la llamada *</label>
+                    <input type="date" id="callDate" required="">
+                </div>
+                <div class="form-group">
+                    <label for="callTime">Hora de la llamada *</label>
+                    <input type="time" id="callTime" required="">
+                </div>
+                <div class="form-group">
+                    <label for="priority">Prioridad</label>
+                    <select id="priority">
+                        <option value="media">Media</option>
+                        <option value="alta">Alta</option>
+                        <option value="baja">Baja</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notas/Contexto</label>
+                    <textarea id="notes" placeholder="Ej: Interesado en campaña de Google Ads. Preguntó por precios."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="assignedTo">Asignado a</label>
+                    <input type="text" id="assignedTo" placeholder="Nombre del responsable (opcional)">
+                </div>
+                <div class="form-group">
+                    <label for="createdBy">Creado por *</label>
+                    <input type="text" id="createdBy" required="" placeholder="Tu nombre">
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="./index_files/cb=gapi.loaded_0" async=""></script><script src="./index_files/api.js.descarga" gapi_processed="true"></script>
+    <script>
+        // Configuración de Google API
+        const CLIENT_ID = '520845415694-rqr63fjugo60gst7ka705u0o35sf5d4i.apps.googleusercontent.com';
+        const API_KEY = 'AIzaSyBnl8vZKTc0E0YlZ8Dq8Zl0l8Zl8Zl8Zl8'; // Placeholder - no necesario para OAuth
+        const SPREADSHEET_ID = '10st9eciOZwPhexj2vtz43D_jR1NuQlxA6Sp0DhurAr8';
+        const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
+
+        let tokenClient;
+        let accessToken = null;
+        let reminders = [];
+        let editingId = null;
+
+        // Inicializar Google Identity Services
+        function gapiLoaded() {
+            gapi.load('client', initializeGapiClient);
+        }
+
+        async function initializeGapiClient() {
+            await gapi.client.init({
+                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+            });
+            
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: '', // Se define después
+            });
+
+            // Verificar si ya hay token guardado
+            const savedToken = localStorage.getItem('google_access_token');
+            if (savedToken) {
+                accessToken = savedToken;
+                gapi.client.setToken({ access_token: accessToken });
+                await loadFromSheets();
+                showMainApp();
+            } else {
+                showAuthScreen();
+            }
+        }
+
+        function showAuthScreen() {
+            document.getElementById('authScreen').style.display = 'block';
+            document.getElementById('mainApp').style.display = 'none';
+        }
+
+        function showMainApp() {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            updateSyncStatus('connected', '✅', 'Conectado');
+        }
+
+        function handleAuthClick() {
+            tokenClient.callback = async (resp) => {
+                if (resp.error !== undefined) {
+                    throw (resp);
+                }
+                accessToken = resp.access_token;
+                localStorage.setItem('google_access_token', accessToken);
+                await initializeSheet();
+                await loadFromSheets();
+                showMainApp();
+            };
+
+            if (accessToken === null) {
+                tokenClient.requestAccessToken({ prompt: 'consent' });
+            } else {
+                tokenClient.requestAccessToken({ prompt: '' });
+            }
+        }
+
+        async function initializeSheet() {
+            try {
+                // Crear encabezados si la hoja está vacía
+                const headers = [['ID', 'Cliente', 'Teléfono', 'Fecha', 'Hora', 'Prioridad', 'Estado', 'Notas', 'Asignado a', 'Creado por', 'Fecha creación']];
+                
+                await gapi.client.sheets.spreadsheets.values.update({
+                    spreadsheetId: SPREADSHEET_ID,
+                    range: 'A1:K1',
+                    valueInputOption: 'RAW',
+                    resource: {
+                        values: headers
+                    }
+                });
+            } catch (error) {
+                console.error('Error inicializando hoja:', error);
+            }
+        }
+
+        async function loadFromSheets() {
+            try {
+                updateSyncStatus('syncing', '🔄', 'Sincronizando...');
+                
+                const response = await gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: SPREADSHEET_ID,
+                    range: 'A2:K1000',
+                });
+
+                const rows = response.result.values;
+                if (!rows || rows.length === 0) {
+                    reminders = [];
+                } else {
+                    reminders = rows.map(row => ({
+                        id: parseInt(row[0]) || Date.now(),
+                        clientName: row[1] || '',
+                        phoneNumber: row[2] || '',
+                        callDate: row[3] || '',
+                        callTime: row[4] || '',
+                        priority: row[5] || 'media',
+                        status: row[6] || 'pendiente',
+                        notes: row[7] || '',
+                        assignedTo: row[8] || '',
+                        createdBy: row[9] || '',
+                        createdAt: row[10] || new Date().toISOString()
+                    }));
+                }
+
+                renderCalls();
+                updateStats();
+                updateSyncStatus('connected', '✅', 'Sincronizado');
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+                updateSyncStatus('disconnected', '⚠️', 'Error de conexión');
+            }
+        }
+
+        async function saveToSheets() {
+            try {
+                updateSyncStatus('syncing', '🔄', 'Guardando...');
+                
+                const values = reminders.map(r => [
+                    r.id,
+                    r.clientName,
+                    r.phoneNumber,
+                    r.callDate,
+                    r.callTime,
+                    r.priority,
+                    r.status,
+                    r.notes,
+                    r.assignedTo,
+                    r.createdBy,
+                    r.createdAt
+                ]);
+
+                await gapi.client.sheets.spreadsheets.values.clear({
+                    spreadsheetId: SPREADSHEET_ID,
+                    range: 'A2:K1000',
+                });
+
+                if (values.length > 0) {
+                    await gapi.client.sheets.spreadsheets.values.update({
+                        spreadsheetId: SPREADSHEET_ID,
+                        range: 'A2:K' + (values.length + 1),
+                        valueInputOption: 'RAW',
+                        resource: {
+                            values: values
+                        }
+                    });
+                }
+
+                updateSyncStatus('connected', '✅', 'Sincronizado');
+            } catch (error) {
+                console.error('Error guardando datos:', error);
+                updateSyncStatus('disconnected', '⚠️', 'Error al guardar');
+            }
+        }
+
+        async function manualSync() {
+            await loadFromSheets();
+        }
+
+        function updateSyncStatus(status, icon, text) {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.className = `sync-status ${status}`;
+            document.getElementById('syncIcon').textContent = icon;
+            document.getElementById('syncText').textContent = text;
+        }
+
+        function openModal(id = null) {
+            const modal = document.getElementById('reminderModal');
+            const form = document.getElementById('reminderForm');
+            const title = document.getElementById('modalTitle');
+            
+            if (id !== null) {
+                editingId = id;
+                title.textContent = 'Editar Recordatorio';
+                const reminder = reminders.find(r => r.id === id);
+                document.getElementById('clientName').value = reminder.clientName;
+                document.getElementById('phoneNumber').value = reminder.phoneNumber;
+                document.getElementById('callDate').value = reminder.callDate;
+                document.getElementById('callTime').value = reminder.callTime;
+                document.getElementById('priority').value = reminder.priority;
+                document.getElementById('notes').value = reminder.notes;
+                document.getElementById('assignedTo').value = reminder.assignedTo || '';
+                document.getElementById('createdBy').value = reminder.createdBy || '';
+            } else {
+                editingId = null;
+                title.textContent = 'Nuevo Recordatorio';
+                form.reset();
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('callDate').value = today;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('reminderModal').classList.remove('active');
+            document.getElementById('reminderForm').reset();
+            editingId = null;
+        }
+
+        async function saveReminder(event) {
+            event.preventDefault();
+            
+            const reminder = {
+                id: editingId !== null ? editingId : Date.now(),
+                clientName: document.getElementById('clientName').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                callDate: document.getElementById('callDate').value,
+                callTime: document.getElementById('callTime').value,
+                priority: document.getElementById('priority').value,
+                notes: document.getElementById('notes').value,
+                assignedTo: document.getElementById('assignedTo').value,
+                createdBy: document.getElementById('createdBy').value,
+                status: editingId !== null ? reminders.find(r => r.id === editingId).status : 'pendiente',
+                createdAt: editingId !== null ? reminders.find(r => r.id === editingId).createdAt : new Date().toISOString()
+            };
+            
+            if (editingId !== null) {
+                const index = reminders.findIndex(r => r.id === editingId);
+                reminders[index] = reminder;
+            } else {
+                reminders.push(reminder);
+            }
+            
+            await saveToSheets();
+            renderCalls();
+            updateStats();
+            closeModal();
+        }
+
+        async function deleteReminder(id) {
+            if (confirm('¿Estás seguro de eliminar este recordatorio?')) {
+                reminders = reminders.filter(r => r.id !== id);
+                await saveToSheets();
+                renderCalls();
+                updateStats();
+            }
+        }
+
+        async function toggleStatus(id) {
+            const reminder = reminders.find(r => r.id === id);
+            reminder.status = reminder.status === 'pendiente' ? 'completada' : 'pendiente';
+            await saveToSheets();
+            renderCalls();
+            updateStats();
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const dateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const tomorrowOnly = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+            const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            
+            if (targetDate.getTime() === dateOnly.getTime()) return 'Hoy';
+            if (targetDate.getTime() === tomorrowOnly.getTime()) return 'Mañana';
+            
+            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            
+            return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]}`;
+        }
+
+        function formatTime(timeStr) {
+            const [hours, minutes] = timeStr.split(':');
+            return `${hours}:${minutes}`;
+        }
+
+        function filterReminders() {
+            const view = document.getElementById('filterView').value;
+            const status = document.getElementById('filterStatus').value;
+            const priority = document.getElementById('filterPriority').value;
+            
+            let filtered = [...reminders];
+            
+            if (status !== 'all') {
+                filtered = filtered.filter(r => r.status === status);
+            }
+            
+            if (priority !== 'all') {
+                filtered = filtered.filter(r => r.priority === priority);
+            }
+            
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            
+            if (view === 'today') {
+                filtered = filtered.filter(r => r.callDate === todayStr);
+            } else if (view === 'week') {
+                const weekFromNow = new Date(today);
+                weekFromNow.setDate(weekFromNow.getDate() + 7);
+                filtered = filtered.filter(r => {
+                    const callDate = new Date(r.callDate + 'T00:00:00');
+                    return callDate >= today && callDate <= weekFromNow;
+                });
+            } else if (view === 'upcoming') {
+                filtered = filtered.filter(r => r.callDate >= todayStr);
+            }
+            
+            return filtered;
+        }
+
+        function renderCalls() {
+            const container = document.getElementById('callsContainer');
+            const filtered = filterReminders();
+            
+            const grouped = {};
+            filtered.forEach(reminder => {
+                if (!grouped[reminder.callDate]) {
+                    grouped[reminder.callDate] = [];
+                }
+                grouped[reminder.callDate].push(reminder);
+            });
+            
+            const sortedDates = Object.keys(grouped).sort();
+            
+            if (sortedDates.length === 0) {
+                container.innerHTML = '<div class="empty-state">No hay recordatorios con los filtros seleccionados</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            sortedDates.forEach(date => {
+                const calls = grouped[date].sort((a, b) => a.callTime.localeCompare(b.callTime));
+                
+                const daySection = document.createElement('div');
+                daySection.className = 'day-section';
+                
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.innerHTML = `
+                    <div class="day-title">${formatDate(date)}</div>
+                    <div class="day-count">${calls.length} llamada${calls.length !== 1 ? 's' : ''}</div>
+                `;
+                daySection.appendChild(dayHeader);
+                
+                calls.forEach(call => {
+                    const callItem = document.createElement('div');
+                    callItem.className = 'call-item';
+                    callItem.innerHTML = `
+                        <div class="call-header">
+                            <div>
+                                <div class="call-client">
+                                    ${call.clientName}
+                                    <span class="priority-badge priority-${call.priority}">${call.priority.toUpperCase()}</span>
+                                </div>
+                                <div class="call-time">🕐 ${formatTime(call.callTime)}</div>
+                            </div>
+                        </div>
+                        <div class="call-phone">📱 ${call.phoneNumber}</div>
+                        ${call.notes ? `<div class="call-notes">${call.notes}</div>` : ''}
+                        ${call.assignedTo ? `<div class="call-notes"><strong>Asignado:</strong> ${call.assignedTo}</div>` : ''}
+                        <div class="call-notes" style="font-size: 12px; opacity: 0.8;"><strong>Creado por:</strong> ${call.createdBy || 'No especificado'}</div>
+                        <div class="call-footer">
+                            <span class="call-status status-${call.status}">${call.status === 'pendiente' ? 'Pendiente' : 'Completada'}</span>
+                            <div class="call-actions">
+                                <button class="btn btn-secondary btn-small" onclick="toggleStatus(${call.id})">
+                                    ${call.status === 'pendiente' ? '✓ Completar' : '↺ Reabrir'}
+                                </button>
+                                <button class="btn btn-secondary btn-small" onclick="openModal(${call.id})">Editar</button>
+                                <button class="btn btn-secondary btn-small" onclick="deleteReminder(${call.id})">Eliminar</button>
+                            </div>
+                        </div>
+                    `;
+                    daySection.appendChild(callItem);
+                });
+                
+                container.appendChild(daySection);
+            });
+        }
+
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const weekFromNow = new Date();
+            weekFromNow.setDate(weekFromNow.getDate() + 7);
+            
+            const todayCount = reminders.filter(r => r.callDate === today).length;
+            const weekCount = reminders.filter(r => {
+                const callDate = new Date(r.callDate + 'T00:00:00');
+                return callDate >= new Date() && callDate <= weekFromNow;
+            }).length;
+            const pendingCount = reminders.filter(r => r.status === 'pendiente').length;
+            const completedCount = reminders.filter(r => r.status === 'completada').length;
+            
+            document.getElementById('statToday').textContent = todayCount;
+            document.getElementById('statWeek').textContent = weekCount;
+            document.getElementById('statPending').textContent = pendingCount;
+            document.getElementById('statCompleted').textContent = completedCount;
+        }
+
+        document.getElementById('reminderModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        function checkUpcomingCalls() {
+            if (!('Notification' in window) || Notification.permission !== 'granted') return;
+            
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            const todayStr = now.toISOString().split('T')[0];
+            
+            reminders.forEach(reminder => {
+                if (reminder.status === 'completada' || reminder.callDate !== todayStr) return;
+                if (reminder.notified) return;
+                
+                const [hours, minutes] = reminder.callTime.split(':');
+                const callTime = parseInt(hours) * 60 + parseInt(minutes);
+                const timeDiff = callTime - currentTime;
+                
+                if (timeDiff > 0 && timeDiff <= 15) {
+                    new Notification('⏰ Recordatorio de Llamada', {
+                        body: `En ${timeDiff} min: ${reminder.clientName}\n${reminder.phoneNumber}`,
+                        icon: '📞',
+                        tag: `reminder-${reminder.id}`
+                    });
+                    
+                    reminder.notified = true;
+                }
+                
+                if (timeDiff === 0) {
+                    new Notification('🔔 ¡Hora de Llamar!', {
+                        body: `AHORA: ${reminder.clientName}\n${reminder.phoneNumber}`,
+                        icon: '📞',
+                        tag: `reminder-now-${reminder.id}`,
+                        requireInteraction: true
+                    });
+                }
+            });
+        }
+
+        function resetDailyNotifications() {
+            const lastReset = localStorage.getItem('lastNotificationReset');
+            const today = new Date().toISOString().split('T')[0];
+            
+            if (lastReset !== today) {
+                reminders.forEach(r => r.notified = false);
+                localStorage.setItem('lastNotificationReset', today);
+            }
+        }
+
+        // Cargar Google Identity Services
+        window.onload = function() {
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.onload = gapiLoaded;
+            document.body.appendChild(script);
+            
+            requestNotificationPermission();
+            
+            setInterval(() => {
+                checkUpcomingCalls();
+                resetDailyNotifications();
+            }, 60000);
+        };
+    </script>
+
+
+
+<script src="./index_files/client"></script><iframe id="apiproxya39ebb54b23a92d1628daf67e9a5b76ca963131c0.200281426" name="apiproxya39ebb54b23a92d1628daf67e9a5b76ca963131c0.200281426" src="./index_files/proxy.html" tabindex="-1" aria-hidden="true" style="width: 1px; height: 1px; position: absolute; top: -100px; display: none;"></iframe></body></html>
