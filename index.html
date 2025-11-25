@@ -1259,6 +1259,9 @@
             document.body.appendChild(script);
             
             requestNotificationPermission();
+                        
+            // Conectar formulario con función saveReminder
+            document.getElementById('reminderForm').addEventListener('submit', saveReminder);
             
             setInterval(() => {
                 checkUpcomingCalls();
